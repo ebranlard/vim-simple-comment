@@ -10,6 +10,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let b:comment_leader ='#' 
 autocmd FileType c,cpp,java,scala,php    let b:comment_leader = '//'
+autocmd FileType pascal,delphi           let b:comment_leader = '//'
 autocmd FileType sh,ruby,python,perl     let b:comment_leader = '#'
 autocmd FileType conf,fstab,gtkrc        let b:comment_leader = '#'
 autocmd FileType gitconfig               let b:comment_leader = '#'
