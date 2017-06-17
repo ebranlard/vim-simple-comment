@@ -4,12 +4,11 @@
 " 
 " Updates: May 2013: improved indent in Boxed comment
 " 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""" Definition of comment character
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" --------------------------------------------------------------------------------}
+" --- Definition of comment character
+" --------------------------------------------------------------------------------{
 let b:comment_leader ='#' 
-autocmd FileType c,cpp,java,scala,php    let b:comment_leader = '//'
+autocmd FileType c,cpp,cs,java,scala,php let b:comment_leader = '//'
 autocmd FileType pascal,delphi           let b:comment_leader = '//'
 autocmd FileType dosbatch                let b:comment_leader = '::'
 autocmd FileType autohotkey              let b:comment_leader = ';;'
@@ -26,17 +25,23 @@ autocmd FileType markdown                let b:comment_leader = '<---'
 autocmd FileType htc                     let b:comment_leader = ';'
 autocmd FileType oin                     let b:comment_leader = '!'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""" Definition of functions
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" --- Possibility to change the comment leader used in the "middle" of a boxed
+autocmd FileType *             let b:comment_leader_box ='' 
+autocmd FileType matlab        let b:comment_leader_box = '%'
+
+" --- Possibility to insert FoldingMarkers
+" let b:comment_box_open  ='}' 
+" let b:comment_box_close ='{' 
+
+" --------------------------------------------------------------------------------}
+" --- Definition of functions
+" --------------------------------------------------------------------------------{
 function! Comment()
-    let c=b:comment_leader
-    exe "s@^@".c." @"
+    exe "s@^@".b:comment_leader." @"
 endfun
-" kdjfksj
 function! UnComment()
-    let c=b:comment_leader
-    exe "s@^[\ ]*".c." @@e"
+    exe "s@^[\ ]*".b:comment_leader." @@e"
 endfun
 function! ToggleComment()
     let c=b:comment_leader
@@ -44,38 +49,50 @@ function! ToggleComment()
     "     exe "s@^@".c."@"
 endfun
 " Insert a line below the cursor filled with "-", just like below
-" --------------------------------------------------------------------------------
-function! LineComment()
-    let c=b:comment_leader
-    normal o
-    exe "normal 0i".c." "
-    normal 80A-
-    normal ==
+" ---------------------------------------------------------------------------
+function! InsertLineComment()
+    exe "normal o".b:comment_leader." --------------------------------------------------------------------------------"
+"     normal ==
 endfun
-" --------------------------------------------------------------------------------
-" --- Create box like this one, below the cursor, and ready to insert the title
-" --------------------------------------------------------------------------------
-fun! BoxedComment()
-    let c=b:comment_leader
-    normal o
-    exe "normal 0i".c." "
-    normal 80A-
-    normal o
-    exe "normal 0i".c." "
-    normal 80A-
-    exe "normal ko".c.' ---  '
-    normal jVkk=j$
+
+" Insert a "mid comment"
+" ---
+function! InsertMidComment()
+    exe "normal o".b:comment_leader." ---  "
     startinsert
 endfun
 
+" --------------------------------------------------------------------------------}
+" --- Create box like this one, below the cursor, and ready to insert the title
+" --------------------------------------------------------------------------------{
+" TODO, } and { as a variable
+"normal 75A-
+fun! InsertBoxedComment()
+    let c=b:comment_leader
+    let cb=b:comment_leader_box
+    exe "normal o".c." --------------------------------------------------------------------------------}"
+    exe "normal o".c.cb.' ---  '
+    exe "normal o".c." --------------------------------------------------------------------------------{"
+    "normal jVkk=j$
+    normal 0k$
+    startinsert
+endfun
+fun! WrapComment()
+    let c=b:comment_leader
+    let cb=b:comment_leader_box
+    exe "normal O".c." --------------------------------------------------------------------------------}"
+    normal ^j
+    call UnComment()
+    exe "normal i".c.cb.' --- '
+    exe "normal o".c." --------------------------------------------------------------------------------{"
+    normal ^k6l
+endfun
 
-" --------------------------------------------------------------------------------
-" --- Mappings 
-" --------------------------------------------------------------------------------
 map <silent> ,ct :call ToggleComment()<CR>
 map <silent> ,cc :call Comment()<CR>
 map <silent> ,cu :call UnComment()<CR>
-map <silent> ,cb :call BoxedComment() <cr>
-map <silent> ,cl :call LineComment() <cr>
-"map ,co O#<Esc>90A=<Esc>90\|D<CR>i#<CR><Esc>i##<Esc>90a=<Esc>90\|D<Esc>kA
+map <silent> ,cb :call InsertBoxedComment() <cr>
+map <silent> ,cl :call InsertLineComment() <cr>
+map <silent> ,ci :call InsertMidComment() <cr>
+map <silent> ,cw :call WrapComment() <cr>
 
