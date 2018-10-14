@@ -9,7 +9,7 @@
 " --------------------------------------------------------------------------------{
 let b:comment_leader ='#' 
 autocmd FileType c,cpp,cs,java,scala,php let b:comment_leader = '//'
-autocmd FileType pascal,delphi           let b:comment_leader = '//'
+autocmd FileType pascal,delphi,js        let b:comment_leader = '//'
 autocmd FileType dosbatch                let b:comment_leader = '::'
 autocmd FileType autohotkey              let b:comment_leader = ';;'
 autocmd FileType sh,ruby,python,perl     let b:comment_leader = '#'
@@ -24,6 +24,7 @@ autocmd FileType vim                     let b:comment_leader = '"'
 autocmd FileType markdown                let b:comment_leader = '<---'
 autocmd FileType htc                     let b:comment_leader = ';'
 autocmd FileType oin                     let b:comment_leader = '!'
+autocmd FileType fast                    let b:comment_leader = '!'
 
 
 " --- Possibility to change the comment leader used in the "middle" of a boxed
