@@ -8,6 +8,7 @@
 " --- Definition of comment character
 " --------------------------------------------------------------------------------{
 let b:comment_leader ='#' 
+autocmd FileType *                       let b:comment_leader ='#' 
 autocmd FileType c,cpp,cs,java,scala,php let b:comment_leader = '//'
 autocmd FileType pascal,delphi,js        let b:comment_leader = '//'
 autocmd FileType dosbatch                let b:comment_leader = '::'
@@ -15,7 +16,7 @@ autocmd FileType autohotkey              let b:comment_leader = ';;'
 autocmd FileType sh,ruby,python,perl     let b:comment_leader = '#'
 autocmd FileType conf,fstab,gtkrc,yaml   let b:comment_leader = '#'
 autocmd FileType gitconfig               let b:comment_leader = '#'
-autocmd FileType make,apache             let b:comment_leader = '#'
+autocmd FileType make,cmake,apache       let b:comment_leader = '#'
 autocmd FileType text                    let b:comment_leader = '#'
 autocmd FileType fortran                 let b:comment_leader = '!'
 autocmd FileType tex,matlab,bib          let b:comment_leader = '%'
